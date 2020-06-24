@@ -25,7 +25,22 @@ public class Referee {
     @Column(name = "Nazwisko", nullable = false, length = 30)
     private String lastName;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idTournament")
-    private List<Tournament> tournaments = new LinkedList<>();
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "idTournament")
+//    private List<Tournament> tournaments = new LinkedList<>();
+
+
+    public Referee(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "Referee{" +
+                "idReferee=" + idReferee +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }

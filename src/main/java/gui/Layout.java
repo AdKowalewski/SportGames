@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,8 +43,8 @@ public class Layout extends JFrame implements ActionListener {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Drużyny", setPanel1());
         tabbedPane.addTab("Sędziowie", setPanel2());
-//        tabbedPane.addTab("Turnieje", setPanel3());
-//        tabbedPane.addTab("Tabela wyników", setPanel4());
+        tabbedPane.addTab("Turnieje", setPanel3());
+        tabbedPane.addTab("Tabela wyników", setPanel4());
 
         return tabbedPane;
     }
@@ -136,25 +137,74 @@ public class Layout extends JFrame implements ActionListener {
         return panel2;
     }
 
-//    private JPanel setPanel3() {
-//        JPanel panel3 = new JPanel();
-//        GridBagLayout layout3 = new GridBagLayout();
-//        panel3.setLayout(layout3);
-//        GridBagConstraints c3 = new GridBagConstraints();
-//        c3.fill = GridBagConstraints.HORIZONTAL;
-//
-//        return panel3;
-//    }
-//
-//    private JPanel setPanel4() {
-//        JPanel panel4 = new JPanel();
-//        GridBagLayout layout4 = new GridBagLayout();
-//        panel4.setLayout(layout4);
-//        GridBagConstraints c4 = new GridBagConstraints();
-//        c4.fill = GridBagConstraints.HORIZONTAL;
-//
-//        return panel4;
-//    }
+    private JPanel setPanel3() {
+        JPanel panel3 = new JPanel();
+        GridBagLayout layout3 = new GridBagLayout();
+        panel3.setLayout(layout3);
+        GridBagConstraints c3 = new GridBagConstraints();
+        c3.fill = GridBagConstraints.HORIZONTAL;
+
+        JRadioButton volleyballButton = new JRadioButton("Turniej siatkówki");
+        JButton modifyTournament = new JButton("Modyfikuj turniej");
+        JButton generateTournament = new JButton("Generuj turniej");
+        JButton generateFinals = new JButton("Generuj finały");
+        JLabel label = new JLabel("Tabela rozgrywek");
+        String[] columnNames1 = {"Drużyna 1", "Drużyna 2", "Zwycięzca", "Wynik", "Sędzia", "Sędzia pomocniczy 1", "Sędzia pomocniczy 2"};
+        JTable table1 = new JTable(new DefaultTableModel(null, columnNames1));
+        JScrollPane scroll1 = new JScrollPane(table1);
+        scroll1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        String[] columnNames2 = {"Drużyna 1", "Drużyna 2", "Zwycięzca", "Wynik", "Sędzia"};
+        JTable table2 = new JTable(new DefaultTableModel(null, columnNames2));
+        JScrollPane scroll2 = new JScrollPane(table2);
+        scroll2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        c3.gridx = 0;
+        c3.gridy = 0;
+        panel3.add(volleyballButton, c3);
+
+        c3.gridy = 1;
+        panel3.add(modifyTournament, c3);
+
+        c3.gridy = 2;
+        panel3.add(generateTournament, c3);
+
+        c3.gridy = 3;
+        panel3.add(generateFinals, c3);
+
+        c3.gridx = 1;
+        c3.gridy = 0;
+        panel3.add(label, c3);
+        c3.gridy = 1;
+        if(volleyballButton.isSelected()) {
+            panel3.add(scroll1, c3);
+        } else {
+            panel3.add(scroll2, c3);
+        }
+
+        return panel3;
+    }
+
+    private JPanel setPanel4() {
+        JPanel panel4 = new JPanel();
+        GridBagLayout layout4 = new GridBagLayout();
+        panel4.setLayout(layout4);
+        GridBagConstraints c4 = new GridBagConstraints();
+        c4.fill = GridBagConstraints.CENTER;
+
+        JLabel label = new JLabel("Tabela wyników");
+        String[] columns = {"Drużyna", "Wynik"};
+        JTable table = new JTable(new DefaultTableModel(null, columns));
+        JScrollPane scroll = new JScrollPane(table);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        c4.gridx = 0;
+        c4.gridy = 0;
+        panel4.add(label, c4);
+        c4.gridy = 1;
+        panel4.add(scroll, c4);
+
+        return panel4;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

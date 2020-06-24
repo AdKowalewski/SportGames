@@ -1,4 +1,5 @@
 import gui.Layout;
+import service.UserService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -6,14 +7,11 @@ import javax.persistence.Persistence;
 
 public class Runner {
     public static void main(String[] args) {
-        EntityManagerFactory managerFactory =
-                Persistence.createEntityManagerFactory("mysqlPU"); //persistence unit
-        EntityManager entityManager = managerFactory.createEntityManager();
-        System.out.println("Is open: " + entityManager.isOpen());
+
+        UserService service = new UserService();
 
         new Layout().showGuiWindow();
 
-        managerFactory.close();
-        entityManager.close();
+        service.stop();
     }
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,4 +22,16 @@ public class Team {
 
     @Column(name = "Nazwa", nullable = false, length = 30)
     private String teamName;
+
+    public Team(String teamName) {
+        this.teamName = teamName;
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "idTeam=" + idTeam +
+                ", teamName='" + teamName + '\'' +
+                '}';
+    }
 }

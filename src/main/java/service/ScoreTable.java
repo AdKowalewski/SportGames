@@ -22,4 +22,18 @@ public class ScoreTable {
 
     @Column(name = "Wynik", nullable = false, length = 10)
     private int score;
+
+    public ScoreTable(String idTeam, int score) {
+        this.idTeam = idTeam;
+        this.score = score;
+    }
+
+    @Override
+    public String toString() {
+        return "ScoreTable{" +
+                "idScoreTable=" + idScoreTable +
+                ", idTeam='" + idTeam + '\'' +
+                ", score=" + score +
+                '}';
+    }
 }
