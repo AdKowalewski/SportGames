@@ -9,6 +9,21 @@ import java.awt.event.KeyEvent;
 
 public class Layout extends JFrame implements ActionListener {
     private JFrame frame;
+    private JButton newTeam;
+    private JButton deleteTeam;
+    private JButton modifyTeam;
+    private JList teamList;
+    private JButton newReferee;
+    private JButton deleteReferee;
+    private JButton modifyReferee;
+    private JList refereeList;
+    private JRadioButton volleyballButton;
+    private JButton modifyTournament;
+    private JButton generateTournament;
+    private JButton generateFinals;
+    private JTable table1;
+    private JTable table2;
+    private JTable tableScore;
 
     public void showGuiWindow() {
         frame = new JFrame("GamesApp");
@@ -29,9 +44,11 @@ public class Layout extends JFrame implements ActionListener {
         JMenu fileMenu = new JMenu("File");
         JMenu optMenu = new JMenu("Options");
         JMenuItem exit = new JMenuItem("Exit");
+        JMenuItem export = new JMenuItem("Export");
         exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.ALT_MASK));
         exit.addActionListener(this);
         fileMenu.add(exit);
+        optMenu.add(export);
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);
@@ -56,47 +73,30 @@ public class Layout extends JFrame implements ActionListener {
         GridBagConstraints c1 = new GridBagConstraints();
         c1.fill = GridBagConstraints.HORIZONTAL;
 
-        JButton newTeam = new JButton("Nowa drużyna");
-        JButton deleteTeam = new JButton("Usuń drużynę");
-        JButton reportTeam = new JButton("Zgłoś drużynę");
-        JButton retreatTeam = new JButton("Wycofaj drużynę");
-        JLabel pool = new JLabel("Pula drużyn");
-        JLabel reported = new JLabel("Grające drużyny");
-
-        DefaultListModel listModel1 = new DefaultListModel();
-        JList list1 = new JList(listModel1);
-        JScrollPane scroll1 = new JScrollPane(list1);
-        scroll1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-
-        DefaultListModel listModel2 = new DefaultListModel();
-        JList list2 = new JList(listModel2);
-        JScrollPane scroll2 = new JScrollPane(list2);
-        scroll2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        newTeam = new JButton("Nowa drużyna");
+        deleteTeam = new JButton("Usuń drużynę");
+        modifyTeam = new JButton("Modyfikuj drużynę");
+        JTextField fieldName = new JTextField();
+        JLabel label = new JLabel("Pula drużyn");
+        DefaultListModel listModel = new DefaultListModel();
+        teamList = new JList(listModel);
+        JScrollPane scroll = new JScrollPane(teamList);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         c1.gridx = 0;
         c1.gridy = 0;
-        panel1.add(newTeam, c1);
-
+        panel1.add(fieldName, c1);
         c1.gridy = 1;
-        panel1.add(deleteTeam, c1);
-
+        panel1.add(newTeam, c1);
         c1.gridy = 2;
-        panel1.add(reportTeam, c1);
-
+        panel1.add(deleteTeam, c1);
         c1.gridy = 3;
-        panel1.add(retreatTeam, c1);
-
+        panel1.add(modifyTeam, c1);
         c1.gridx = 1;
         c1.gridy = 0;
-        panel1.add(pool, c1);
+        panel1.add(label, c1);
         c1.gridy = 1;
-        panel1.add(scroll1, c1);
-
-        c1.gridx = 2;
-        c1.gridy = 0;
-        panel1.add(reported, c1);
-        c1.gridy = 1;
-        panel1.add(scroll2, c1);
+        panel1.add(scroll, c1);
 
         return panel1;
     }
@@ -108,31 +108,29 @@ public class Layout extends JFrame implements ActionListener {
         GridBagConstraints c2 = new GridBagConstraints();
         c2.fill = GridBagConstraints.HORIZONTAL;
 
-        JButton newReferee = new JButton("Nowy sędzia");
-        JButton deleteReferee = new JButton("Usuń sędziego");
-        JButton modifyReferee = new JButton("Modyfikuj sędziego");
-        JLabel refereeList = new JLabel("Lista sędziów");
-
+        newReferee = new JButton("Nowy sędzia");
+        deleteReferee = new JButton("Usuń sędziego");
+        modifyReferee = new JButton("Modyfikuj sędziego");
+        JTextField fieldFirstName = new JTextField();
+        JTextField fieldLastName = new JTextField();
+        JLabel label = new JLabel("Lista sędziów");
         DefaultListModel listModel = new DefaultListModel();
-        JList list = new JList(listModel);
-        JScrollPane scroll = new JScrollPane(list);
+        refereeList = new JList(listModel);
+        JScrollPane scroll = new JScrollPane(refereeList);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         c2.gridx = 0;
         c2.gridy = 0;
-        panel2.add(newReferee, c2);
-
+        panel2.add(fieldFirstName, c2);
         c2.gridy = 1;
-        panel2.add(deleteReferee, c2);
-
-        c2.gridy = 2;
-        panel2.add(modifyReferee, c2);
-
+        panel2.add(fieldLastName, c2);
         c2.gridx = 1;
         c2.gridy = 0;
-        panel2.add(list, c2);
+        panel2.add(newTeam, c2);
         c2.gridy = 1;
-        panel2.add(scroll, c2);
+        panel2.add(deleteReferee, c2);
+        c2.gridy = 2;
+        panel2.add(modifyReferee, c2);
 
         return panel2;
     }
@@ -144,42 +142,69 @@ public class Layout extends JFrame implements ActionListener {
         GridBagConstraints c3 = new GridBagConstraints();
         c3.fill = GridBagConstraints.HORIZONTAL;
 
-        JRadioButton volleyballButton = new JRadioButton("Turniej siatkówki");
-        JButton modifyTournament = new JButton("Modyfikuj turniej");
-        JButton generateTournament = new JButton("Generuj turniej");
-        JButton generateFinals = new JButton("Generuj finały");
+        volleyballButton = new JRadioButton("Turniej siatkówki");
+        modifyTournament = new JButton("Modyfikuj turniej");
+        generateTournament = new JButton("Generuj turniej");
+        generateFinals = new JButton("Generuj finały");
+        JTextField fieldTeam1 = new JTextField();
+        JTextField fieldTeam2 = new JTextField();
+        JTextField fieldWinner = new JTextField();
+        JTextField fieldScore = new JTextField();
+        JTextField fieldReferee = new JTextField();
+        JTextField fieldRefereeAssistant1 = new JTextField();
+        JTextField fieldRefereeAssistant2 = new JTextField();
         JLabel label = new JLabel("Tabela rozgrywek");
         String[] columnNames1 = {"Drużyna 1", "Drużyna 2", "Zwycięzca", "Wynik", "Sędzia", "Sędzia pomocniczy 1", "Sędzia pomocniczy 2"};
-        JTable table1 = new JTable(new DefaultTableModel(null, columnNames1));
+        DefaultTableModel model1 = new DefaultTableModel();
+        model1.setColumnIdentifiers(columnNames1);
+        table1 = new JTable(model1);
         JScrollPane scroll1 = new JScrollPane(table1);
         scroll1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         String[] columnNames2 = {"Drużyna 1", "Drużyna 2", "Zwycięzca", "Wynik", "Sędzia"};
-        JTable table2 = new JTable(new DefaultTableModel(null, columnNames2));
+        DefaultTableModel model2 = new DefaultTableModel();
+        model2.setColumnIdentifiers(columnNames2);
+        table2 = new JTable(model2);
         JScrollPane scroll2 = new JScrollPane(table2);
         scroll2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         c3.gridx = 0;
         c3.gridy = 0;
-        panel3.add(volleyballButton, c3);
-
+        panel3.add(fieldTeam1, c3);
         c3.gridy = 1;
-        panel3.add(modifyTournament, c3);
-
+        panel3.add(fieldTeam2, c3);
         c3.gridy = 2;
-        panel3.add(generateTournament, c3);
-
+        panel3.add(fieldWinner, c3);
         c3.gridy = 3;
-        panel3.add(generateFinals, c3);
-
+        panel3.add(fieldScore, c3);
+        c3.gridy = 4;
+        panel3.add(fieldReferee, c3);
+        c3.gridy = 5;
+        panel3.add(fieldRefereeAssistant1, c3);
+        c3.gridy = 6;
+        panel3.add(fieldRefereeAssistant2, c3);
         c3.gridx = 1;
         c3.gridy = 0;
-        panel3.add(label, c3);
+        panel3.add(volleyballButton, c3);
         c3.gridy = 1;
-        if(volleyballButton.isSelected()) {
-            panel3.add(scroll1, c3);
-        } else {
-            panel3.add(scroll2, c3);
-        }
+        panel3.add(modifyTournament, c3);
+        c3.gridy = 2;
+        panel3.add(generateTournament, c3);
+        c3.gridy = 3;
+        panel3.add(generateFinals, c3);
+        c3.gridx = 2;
+        c3.gridy = 0;
+        panel3.add(label, c3);
+        volleyballButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                c3.gridx = 2;
+                c3.gridy = 1;
+                panel3.add(scroll1, c3);
+                if(!volleyballButton.isSelected()) {
+                    panel3.add(scroll2, c3);
+                }
+            }
+        });
 
         return panel3;
     }
@@ -192,9 +217,11 @@ public class Layout extends JFrame implements ActionListener {
         c4.fill = GridBagConstraints.CENTER;
 
         JLabel label = new JLabel("Tabela wyników");
-        String[] columns = {"Drużyna", "Wynik"};
-        JTable table = new JTable(new DefaultTableModel(null, columns));
-        JScrollPane scroll = new JScrollPane(table);
+        String[] columnNames = {"Drużyna", "Wynik"};
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        tableScore = new JTable(model);
+        JScrollPane scroll = new JScrollPane(tableScore);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         c4.gridx = 0;

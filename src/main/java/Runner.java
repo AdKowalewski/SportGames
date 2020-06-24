@@ -8,10 +8,10 @@ import javax.persistence.Persistence;
 public class Runner {
     public static void main(String[] args) {
 
-        UserService service = new UserService();
+        //UserService service = new UserService();
 
         new Layout().showGuiWindow();
 
-        service.stop();
+        //service.stop();
     }
 }
