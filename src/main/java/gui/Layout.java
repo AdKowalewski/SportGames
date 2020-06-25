@@ -1,11 +1,13 @@
 package gui;
 
+import service.Referee;
+import service.Team;
+import service.UserService;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 public class Layout extends JFrame implements ActionListener {
     private JFrame frame;
@@ -24,6 +26,9 @@ public class Layout extends JFrame implements ActionListener {
     private JTable table1;
     private JTable table2;
     private JTable tableScore;
+    UserService userService = new UserService();
+    private DefaultListModel teamListModel;
+    private DefaultListModel refereeListModel;
 
     public void showGuiWindow() {
         frame = new JFrame("GamesApp");
@@ -78,11 +83,12 @@ public class Layout extends JFrame implements ActionListener {
         modifyTeam = new JButton("Modyfikuj drużynę");
         JTextField fieldName = new JTextField();
         JLabel label = new JLabel("Pula drużyn");
-        DefaultListModel listModel = new DefaultListModel();
-        teamList = new JList(listModel);
+        teamListModel = new DefaultListModel();
+        teamList = new JList(teamListModel);
         JScrollPane scroll = new JScrollPane(teamList);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
+        c1.insets = new Insets(10, 10, 10, 10);
         c1.gridx = 0;
         c1.gridy = 0;
         panel1.add(fieldName, c1);
@@ -97,6 +103,41 @@ public class Layout extends JFrame implements ActionListener {
         panel1.add(label, c1);
         c1.gridy = 1;
         panel1.add(scroll, c1);
+
+        newTeam.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teamListModel.addElement(fieldName.getText());
+                fieldName.setText("");
+                userService.addTeam(new Team(fieldName.getText()));
+            }
+        });
+
+        teamList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String selected = teamList.getSelectedValue().toString();
+                fieldName.setText(selected);
+            }
+        });
+
+        deleteTeam.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int index = teamList.getSelectedIndex();
+                teamListModel.removeElementAt(index);
+                userService.removeTeam(null);
+            }
+        });
+
+        modifyTeam.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int index = teamList.getSelectedIndex();
+                teamListModel.setElementAt(fieldName.getText(), index);
+                userService.modifyTeam(null);
+            }
+        });
 
         return panel1;
     }
@@ -114,11 +155,12 @@ public class Layout extends JFrame implements ActionListener {
         JTextField fieldFirstName = new JTextField();
         JTextField fieldLastName = new JTextField();
         JLabel label = new JLabel("Lista sędziów");
-        DefaultListModel listModel = new DefaultListModel();
-        refereeList = new JList(listModel);
+        refereeListModel = new DefaultListModel();
+        refereeList = new JList(refereeListModel);
         JScrollPane scroll = new JScrollPane(refereeList);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
+        c2.insets = new Insets(10, 10, 10, 10);
         c2.gridx = 0;
         c2.gridy = 0;
         panel2.add(fieldFirstName, c2);
@@ -126,11 +168,54 @@ public class Layout extends JFrame implements ActionListener {
         panel2.add(fieldLastName, c2);
         c2.gridx = 1;
         c2.gridy = 0;
-        panel2.add(newTeam, c2);
+        panel2.add(newReferee, c2);
         c2.gridy = 1;
         panel2.add(deleteReferee, c2);
         c2.gridy = 2;
         panel2.add(modifyReferee, c2);
+        c2.gridx = 2;
+        c2.gridy = 0;
+        panel2.add(label, c2);
+        c2.gridy = 1;
+        panel2.add(scroll, c2);
+
+        newReferee.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refereeListModel.addElement(fieldFirstName.getText() + " " + fieldLastName.getText());
+                fieldFirstName.setText("");
+                fieldLastName.setText("");
+                userService.addReferee(new Referee(fieldFirstName.getText(), fieldLastName.getText()));
+            }
+        });
+
+        teamList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String selected = refereeList.getSelectedValue().toString();
+                String[] split = selected.split(" ");
+                fieldFirstName.setText(split[0]);
+                fieldLastName.setText(split[1]);
+            }
+        });
+
+        deleteTeam.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int index = refereeList.getSelectedIndex();
+                refereeListModel.removeElementAt(index);
+                userService.removeReferee(null);
+            }
+        });
+
+        modifyTeam.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int index = refereeList.getSelectedIndex();
+                refereeListModel.setElementAt(fieldFirstName.getText() + " " + fieldLastName.getText(), index);
+                userService.modifyReferee(null);
+            }
+        });
 
         return panel2;
     }
@@ -146,13 +231,32 @@ public class Layout extends JFrame implements ActionListener {
         modifyTournament = new JButton("Modyfikuj turniej");
         generateTournament = new JButton("Generuj turniej");
         generateFinals = new JButton("Generuj finały");
+//        JComboBox fieldTeam1 = new JComboBox();
+//        fieldTeam1.setModel(new DefaultComboBoxModel());
+//        fieldTeam1.setEditable(true);
+//        JComboBox fieldTeam2 = new JComboBox();
+//        fieldTeam2.setModel(new DefaultComboBoxModel());
+//        fieldTeam2.setEditable(true);
+//        JComboBox fieldWinner = new JComboBox();
+//        fieldWinner.setModel(new DefaultComboBoxModel());
+//        fieldWinner.setEditable(true);
+
+//        JComboBox fieldReferee = new JComboBox();
+//        fieldReferee.setModel(new DefaultComboBoxModel());
+//        fieldReferee.setEditable(true);
+//        JComboBox fieldRefereeAssistant1 = new JComboBox();
+//        fieldRefereeAssistant1.setModel(new DefaultComboBoxModel());
+//        fieldRefereeAssistant1.setEditable(true);
+//        JComboBox fieldRefereeAssistant2 = new JComboBox();
+//        fieldRefereeAssistant2.setModel(new DefaultComboBoxModel());
+//        fieldRefereeAssistant2.setEditable(true);
         JTextField fieldTeam1 = new JTextField();
         JTextField fieldTeam2 = new JTextField();
         JTextField fieldWinner = new JTextField();
-        JTextField fieldScore = new JTextField();
         JTextField fieldReferee = new JTextField();
         JTextField fieldRefereeAssistant1 = new JTextField();
         JTextField fieldRefereeAssistant2 = new JTextField();
+        JTextField fieldScore = new JTextField();
         JLabel label = new JLabel("Tabela rozgrywek");
         String[] columnNames1 = {"Drużyna 1", "Drużyna 2", "Zwycięzca", "Wynik", "Sędzia", "Sędzia pomocniczy 1", "Sędzia pomocniczy 2"};
         DefaultTableModel model1 = new DefaultTableModel();
@@ -167,6 +271,7 @@ public class Layout extends JFrame implements ActionListener {
         JScrollPane scroll2 = new JScrollPane(table2);
         scroll2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
+        c3.insets = new Insets(10, 10, 10, 10);
         c3.gridx = 0;
         c3.gridy = 0;
         panel3.add(fieldTeam1, c3);
@@ -194,15 +299,67 @@ public class Layout extends JFrame implements ActionListener {
         c3.gridx = 2;
         c3.gridy = 0;
         panel3.add(label, c3);
-        volleyballButton.addActionListener(new ActionListener() {
+        c3.gridy = 1;
+        panel3.add(scroll1, c3);
+
+//        volleyballButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                c3.gridx = 2;
+//                c3.gridy = 1;
+//                panel3.add(scroll1, c3);
+//                if(!volleyballButton.isSelected()) {
+//                    panel3.add(scroll2, c3);
+//                }
+//            }
+//        });
+
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int index = table1.getSelectedRow();
+                fieldTeam1.setText(model1.getValueAt(index, 0).toString());
+                fieldTeam2.setText(model1.getValueAt(index, 1).toString());
+                fieldWinner.setText(model1.getValueAt(index, 2).toString());
+                fieldScore.setText(model1.getValueAt(index, 3).toString());
+                fieldReferee.setText(model1.getValueAt(index, 4).toString());
+                fieldRefereeAssistant1.setText(model1.getValueAt(index, 5).toString());
+                fieldRefereeAssistant2.setText(model1.getValueAt(index, 6).toString());
+            }
+        });
+
+        table2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int index = table1.getSelectedRow();
+                fieldTeam1.setText(model2.getValueAt(index, 0).toString());
+                fieldTeam2.setText(model2.getValueAt(index, 1).toString());
+                fieldWinner.setText(model2.getValueAt(index, 2).toString());
+                fieldScore.setText(model2.getValueAt(index, 3).toString());
+                fieldReferee.setText(model2.getValueAt(index, 4).toString());
+            }
+        });
+
+        Object[] row = new Object[6];
+
+        modifyTournament.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                c3.gridx = 2;
-                c3.gridy = 1;
-                panel3.add(scroll1, c3);
-                if(!volleyballButton.isSelected()) {
-                    panel3.add(scroll2, c3);
-                }
+                row[0] = fieldTeam1.getText();
+                row[1] = fieldTeam2.getText();
+                row[2] = fieldWinner.getText();
+                row[3] = fieldScore.getText();
+                row[4] = fieldReferee.getText();
+                row[5] = fieldRefereeAssistant1.getText();
+                row[6] = fieldRefereeAssistant2.getText();
+                model1.addRow(row);
+                fieldTeam1.setText("");
+                fieldTeam2.setText("");
+                fieldWinner.setText("");
+                fieldScore.setText("");
+                fieldReferee.setText("");
+                fieldRefereeAssistant1.setText("");
+                fieldRefereeAssistant2.setText("");
             }
         });
 
@@ -224,11 +381,21 @@ public class Layout extends JFrame implements ActionListener {
         JScrollPane scroll = new JScrollPane(tableScore);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
+        c4.insets = new Insets(10, 10, 10, 10);
         c4.gridx = 0;
         c4.gridy = 0;
         panel4.add(label, c4);
         c4.gridy = 1;
         panel4.add(scroll, c4);
+
+        Object[] row = new Object[1];
+
+        generateTournament.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         return panel4;
     }
