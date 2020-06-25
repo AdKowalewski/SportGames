@@ -19,14 +19,14 @@ public class UserService {
         System.out.println("Is open: " + manager.isOpen());
     }
 
-    private void closeConnection() {
+    public void closeConnection() {
         manager.close();
         managerFactory.close();
     }
 
-    public void stop() {
-        closeConnection();
-    }
+//    public void stop() {
+//        closeConnection();
+//    }
 
     public Team addTeam(Team team) {
         return null;

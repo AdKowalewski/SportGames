@@ -12,6 +12,6 @@ public class Runner {
 
         new Layout().showGuiWindow();
 
-        //service.stop();
+        //service.closeConnection();
     }
 }

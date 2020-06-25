@@ -29,7 +29,6 @@ public class Referee {
 //    @JoinColumn(name = "idTournament")
 //    private List<Tournament> tournaments = new LinkedList<>();
 
-
     public Referee(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;

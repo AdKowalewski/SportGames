@@ -26,7 +26,7 @@ public class Layout extends JFrame implements ActionListener {
     private JTable table1;
     private JTable table2;
     private JTable tableScore;
-    UserService userService = new UserService();
+    //UserService userService = new UserService();
     private DefaultListModel teamListModel;
     private DefaultListModel refereeListModel;
 
@@ -109,7 +109,7 @@ public class Layout extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 teamListModel.addElement(fieldName.getText());
                 fieldName.setText("");
-                userService.addTeam(new Team(fieldName.getText()));
+                //userService.addTeam(new Team(fieldName.getText()));
             }
         });
 
@@ -126,7 +126,7 @@ public class Layout extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 int index = teamList.getSelectedIndex();
                 teamListModel.removeElementAt(index);
-                userService.removeTeam(null);
+                //userService.removeTeam(null);
             }
         });
 
@@ -135,7 +135,7 @@ public class Layout extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 int index = teamList.getSelectedIndex();
                 teamListModel.setElementAt(fieldName.getText(), index);
-                userService.modifyTeam(null);
+                //userService.modifyTeam(null);
             }
         });
 
@@ -185,11 +185,11 @@ public class Layout extends JFrame implements ActionListener {
                 refereeListModel.addElement(fieldFirstName.getText() + " " + fieldLastName.getText());
                 fieldFirstName.setText("");
                 fieldLastName.setText("");
-                userService.addReferee(new Referee(fieldFirstName.getText(), fieldLastName.getText()));
+                //userService.addReferee(new Referee(fieldFirstName.getText(), fieldLastName.getText()));
             }
         });
 
-        teamList.addMouseListener(new MouseAdapter() {
+        refereeList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 String selected = refereeList.getSelectedValue().toString();
@@ -199,21 +199,21 @@ public class Layout extends JFrame implements ActionListener {
             }
         });
 
-        deleteTeam.addActionListener(new ActionListener() {
+        deleteReferee.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int index = refereeList.getSelectedIndex();
                 refereeListModel.removeElementAt(index);
-                userService.removeReferee(null);
+                //userService.removeReferee(null);
             }
         });
 
-        modifyTeam.addActionListener(new ActionListener() {
+        modifyReferee.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int index = refereeList.getSelectedIndex();
                 refereeListModel.setElementAt(fieldFirstName.getText() + " " + fieldLastName.getText(), index);
-                userService.modifyReferee(null);
+                //userService.modifyReferee(null);
             }
         });
 
@@ -253,10 +253,10 @@ public class Layout extends JFrame implements ActionListener {
         JTextField fieldTeam1 = new JTextField();
         JTextField fieldTeam2 = new JTextField();
         JTextField fieldWinner = new JTextField();
+        JTextField fieldScore = new JTextField();
         JTextField fieldReferee = new JTextField();
         JTextField fieldRefereeAssistant1 = new JTextField();
         JTextField fieldRefereeAssistant2 = new JTextField();
-        JTextField fieldScore = new JTextField();
         JLabel label = new JLabel("Tabela rozgrywek");
         String[] columnNames1 = {"Drużyna 1", "Drużyna 2", "Zwycięzca", "Wynik", "Sędzia", "Sędzia pomocniczy 1", "Sędzia pomocniczy 2"};
         DefaultTableModel model1 = new DefaultTableModel();

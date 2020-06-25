@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 @Entity
 @Getter
@@ -30,7 +28,7 @@ public class Tournament {
     @Column(name = "Zwycięzca", nullable = false, length = 30)
     private String idWinner;
 
-    @Column(name = "Wynik", nullable = false, length = 3)
+    @Column(name = "Wynik", nullable = false, length = 10)
     private String score;
 
     @OneToMany(cascade = CascadeType.ALL)
